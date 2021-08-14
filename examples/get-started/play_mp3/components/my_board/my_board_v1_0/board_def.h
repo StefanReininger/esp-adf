@@ -54,7 +54,8 @@ extern audio_hal_func_t AUDIO_NEW_CODEC_DEFAULT_HANDLE;
 
 #define INPUT_KEY_NUM     4
 
-#define INPUT_KEY_DEFAULT_INFO() {                      \
+#define
+INPUT_KEY_DEFAULT_INFO() {                      \
     {                                                   \
         .type = PERIPH_ID_ADC_BTN,                      \
         .user_id = INPUT_KEY_USER_ID_VOLUP,             \

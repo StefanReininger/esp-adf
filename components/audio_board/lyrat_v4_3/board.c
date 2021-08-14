@@ -90,13 +90,13 @@ esp_err_t audio_board_key_init(esp_periph_set_handle_t set)
     if (ret != ESP_OK) {
         return ret;
     }
-    periph_touch_cfg_t touch_cfg = {
+   /*  periph_touch_cfg_t touch_cfg = {
         .touch_mask = TOUCH_PAD_SEL4 | TOUCH_PAD_SEL7 | TOUCH_PAD_SEL8 | TOUCH_PAD_SEL9,
         .tap_threshold_percent = 70,
     };
     esp_periph_handle_t touch_periph = periph_touch_init(&touch_cfg);
     AUDIO_NULL_CHECK(TAG, touch_periph, return ESP_ERR_ADF_MEMORY_LACK);
-    ret = esp_periph_start(set, touch_periph);
+    ret = esp_periph_start(set, touch_periph); */
     return ret;
 }
 

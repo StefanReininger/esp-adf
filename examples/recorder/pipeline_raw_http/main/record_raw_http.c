@@ -130,7 +130,7 @@ void app_main(void)
 {
     audio_element_handle_t http_stream_writer, i2s_stream_reader;
 
-    esp_log_level_set("*", ESP_LOG_WARN);
+    esp_log_level_set("*", ESP_LOG_INFO);
     esp_log_level_set(TAG, ESP_LOG_INFO);
 
     EXIT_FLAG = xEventGroupCreate();

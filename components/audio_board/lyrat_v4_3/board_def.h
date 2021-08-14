@@ -30,12 +30,14 @@
 #define SDCARD_OPEN_FILE_NUM_MAX  5
 #define SDCARD_INTR_GPIO          GPIO_NUM_34
 
-#define BUTTON_REC_ID             GPIO_NUM_36
-#define BUTTON_MODE_ID            GPIO_NUM_39
-#define BUTTON_SET_ID             TOUCH_PAD_NUM9
-#define BUTTON_PLAY_ID            TOUCH_PAD_NUM8
-#define BUTTON_VOLUP_ID           TOUCH_PAD_NUM7
-#define BUTTON_VOLDOWN_ID         TOUCH_PAD_NUM4
+
+#define BUTTON_REC_ID             GPIO_NUM_36  // key 1
+#define BUTTON_MODE_ID            GPIO_NUM_13  // key 2
+#define BUTTON_PLAY_ID            GPIO_NUM_19  // key 3
+#define BUTTON_SET_ID             GPIO_NUM_23  // key 4
+#define BUTTON_VOLDOWN_ID         GPIO_NUM_18  // key 5
+#define BUTTON_VOLUP_ID           GPIO_NUM_5   // key 6
+
 
 #define AUXIN_DETECT_GPIO         GPIO_NUM_12
 #define HEADPHONE_DETECT          GPIO_NUM_19
@@ -46,13 +48,13 @@
 extern audio_hal_func_t AUDIO_CODEC_ES8388_DEFAULT_HANDLE;
 
 #define AUDIO_CODEC_DEFAULT_CONFIG(){                   \
-        .adc_input  = AUDIO_HAL_ADC_INPUT_LINE1,        \
+        .adc_input  = AUDIO_HAL_ADC_INPUT_LINE2,        \
         .dac_output = AUDIO_HAL_DAC_OUTPUT_ALL,         \
         .codec_mode = AUDIO_HAL_CODEC_MODE_BOTH,        \
         .i2s_iface = {                                  \
             .mode = AUDIO_HAL_MODE_SLAVE,               \
             .fmt = AUDIO_HAL_I2S_NORMAL,                \
-            .samples = AUDIO_HAL_48K_SAMPLES,           \
+            .samples = AUDIO_HAL_16K_SAMPLES,           \
             .bits = AUDIO_HAL_BIT_LENGTH_16BITS,        \
         },                                              \
 };

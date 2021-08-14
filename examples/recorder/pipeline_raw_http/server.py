@@ -1,11 +1,12 @@
-import os, datetime, sys, urlparse
-import SimpleHTTPServer, BaseHTTPServer
+import os, datetime, sys,struct
+from urllib.parse import urlparse
+from http.server import SimpleHTTPRequestHandler,HTTPServer
 import wave
 
 PORT = 8000
-HOST = '0.0.0.0'
+HOST = "192.168.2.171"
 
-class Handler(SimpleHTTPServer.SimpleHTTPRequestHandler):
+class Handler(SimpleHTTPRequestHandler):
     def _set_headers(self, length):
         self.send_response(200)
         if length > 0:
@@ -24,18 +25,25 @@ class Handler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         return data
 
     def _write_wav(self, data, rates, bits, ch):
+        #prime_numbers = [2, 3, 5, 7,3,2,3,2,2,2,3,2,3,2,2,1]
+        #b23 = bytearray(prime_numbers)
         t = datetime.datetime.utcnow()
         time = t.strftime('%Y%m%dT%H%M%SZ')
         filename = str.format('{}_{}_{}_{}.wav', time, rates, bits, ch)
-
         wavfile = wave.open(filename, 'wb')
-        wavfile.setparams((ch, bits/8, rates, 0, 'NONE', 'NONE'))
-        wavfile.writeframes(bytearray(data))
+        #wavfile.setparams((ch, bits/8, rates, 0, 'NONE', 'NONE'))
+        #wavfile.setnchannels(2)
+        #wavfile.setsampwidth(2)
+        #wavfile.setframerate(16000)
+        wavfile.setnchannels(int(ch))
+        wavfile.setsampwidth(int(bits/8))
+        wavfile.setframerate(int(rates))
+        wavfile.writeframes(bytes(data))
         wavfile.close()
         return filename
 
     def do_POST(self):
-        urlparts = urlparse.urlparse(self.path)
+        urlparts = urlparse(self.path)
         request_file_path = urlparts.path.strip('/')
         total_bytes = 0
         sample_rates = 0
@@ -65,13 +73,12 @@ class Handler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             filename = self._write_wav(data, int(sample_rates), int(bits), int(channel))
             body = 'File {} was written, size {}'.format(filename, total_bytes)
             self._set_headers(len(body))
-            self.wfile.write(body)
-            self.wfile.close()
+            self.wfile.write(body.encode())
+            self.wfile.flush()
         else:
-            return SimpleHTTPServer.SimpleHTTPRequestHandler.do_GET(self)
+            return SimpleHTTPRequestHandler.do_GET(self)
 
-httpd = BaseHTTPServer.HTTPServer((HOST, PORT), Handler)
-
-print("Serving HTTP on {} port {}".format(HOST, PORT));
+httpd = HTTPServer((HOST, PORT), Handler)
+print("Serving HTTP on {} port {}".format(httpd.server_address, httpd.server_port));
 httpd.serve_forever()
 
